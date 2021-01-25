@@ -1,5 +1,10 @@
+# data-transfer-object
+
+Data Transfer Object class built on `class-validator`. Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of contents**
 
 - [data-transfer-object](#data-transfer-object)
@@ -7,13 +12,9 @@
   - [For Node.js and bundlers (Webpack, Rollup, etc)](#for-nodejs-and-bundlers-webpack-rollup-etc)
   - [Direct script tag in browser](#direct-script-tag-in-browser)
 - [Usage](#usage)
-    - [Example](#example)
+  - [Example](#example)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# data-transfer-object
-
-Data Transfer Object class built on `class-validator`. Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.
 
 # Installation
 
