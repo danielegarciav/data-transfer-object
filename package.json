@@ -1,0 +1,48 @@
+{
+  "name": "data-transfer-object",
+  "version": "0.1.0",
+  "description": "Data Transfer Object class built on `class-validator`.",
+  "keywords": [
+    "data-transfer-object",
+    "dto"
+  ],
+  "author": "Daniel Garcia <danielegarciav@gmail.com>",
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/cjs/index.d.ts",
+  "scripts": {
+    "clean": "rimraf -rf ./lib",
+    "build": "npm run clean && npm run compile:cjs && npm run compile:esm",
+    "build:cjs": "npm run clean && npm run compile:cjs",
+    "build:esm": "npm run clean && npm run compile:esm",
+    "compile:cjs": "tsc -P tsconfig.cjs.json",
+    "compile:esm": "tsc -P tsconfig.esm.json",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint --ext .ts src/**",
+    "lint:fix": "eslint --ext .ts src/** --fix",
+    "test": "jest",
+    "docs": "npm run docs:readme && npm run docs:api",
+    "docs:readme": "doctoc --title \"**Table of contents**\" readme.md",
+    "docs:api": "typedoc src/index.ts"
+  },
+  "dependencies": {
+    "class-validator": "^0.13.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "doctoc": "^2.0.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "jest": "^26.6.3",
+    "jest-extended": "^0.11.5",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.20.19",
+    "typescript": "^4.1.3"
+  }
+}

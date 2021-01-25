@@ -1,0 +1,1171 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>data-transfer-object</title>
+	<meta name="description" content="Documentation for data-transfer-object">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">data-transfer-object</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>Project data-transfer-object</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#data-transfer-object" id="data-transfer-object" style="color: inherit; text-decoration: none;">
+					<h1>data-transfer-object</h1>
+				</a>
+				<p>Data Transfer Object class built on <code>class-validator</code>. Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.</p>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h1>Installation</h1>
+				</a>
+				<a href="#for-nodejs-and-bundlers-webpack-rollup-etc" id="for-nodejs-and-bundlers-webpack-rollup-etc" style="color: inherit; text-decoration: none;">
+					<h2>For Node.js and bundlers (Webpack, Rollup, etc)</h2>
+				</a>
+				<pre><code class="language-bash"><span style="color: #000000">npm i data-transfer-object</span>
+<span style="color: #008000"># or</span>
+<span style="color: #000000">yarn add data-transfer-object</span>
+</code></pre>
+				<a href="#direct-script-tag-in-browser" id="direct-script-tag-in-browser" style="color: inherit; text-decoration: none;">
+					<h2>Direct script tag in browser</h2>
+				</a>
+				<p>UMD builds aren&#39;t available yet.</p>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h1>Usage</h1>
+				</a>
+				<p>Create a DTO class by importing <code>DataTransferObject</code> and extending it. This package re-exports all decorators and functions from <code>class-validator</code> so you may use them here.</p>
+				<p>Note that when using TypeScript with <code>&quot;strict&quot;: true</code>, you must use non-null assertions (<code>!:</code>) when declaring class properties. Also, <code>experimentalDecorators</code> and <code>emitDecoratorMetadata</code> must be set to <code>true</code> in your <code>tsconfig.json</code>.</p>
+				<pre><code class="language-typescript"><span style="color: #008000">// input-dtos.ts</span>
+
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DataTransferObject</span><span style="color: #000000">, </span><span style="color: #001080">IsString</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">UserSignupInput</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">DataTransferObject</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  @</span><span style="color: #795E26">IsString</span><span style="color: #000000">()</span>
+<span style="color: #000000">  @</span><span style="color: #795E26">Length</span><span style="color: #000000">(</span><span style="color: #098658">2</span><span style="color: #000000">, </span><span style="color: #098658">36</span><span style="color: #000000">, {</span>
+<span style="color: #000000">    </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;username must be 2-36 characters long&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  })</span>
+<span style="color: #000000">  </span><span style="color: #001080">username</span><span style="color: #000000">!: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">  @</span><span style="color: #795E26">IsString</span><span style="color: #000000">()</span>
+<span style="color: #000000">  @</span><span style="color: #795E26">MinLength</span><span style="color: #000000">(</span><span style="color: #098658">8</span><span style="color: #000000">, {</span>
+<span style="color: #000000">    </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;password must be at least 8 characters long&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  })</span>
+<span style="color: #000000">  </span><span style="color: #001080">password</span><span style="color: #000000">!: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h3>Example</h3>
+				</a>
+				<p>Take for example the following Express request handler, which signs up an user.</p>
+				<pre><code class="language-typescript"><span style="color: #008000">// signup-controller.ts</span>
+
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Request</span><span style="color: #000000">, </span><span style="color: #001080">Response</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;express&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">UserSignupInput</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./input-dtos&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">signup</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">: </span><span style="color: #267F99">Request</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000">: </span><span style="color: #267F99">Response</span><span style="color: #000000">): {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// Construct a new DTO instance passing starting state as argument.</span>
+<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">input</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">UserSignupInput</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Run validation. Only synchronous validators are run by default, which covers most use cases.</span>
+<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// You may also use `.validateAsync()` to run both sync + async validators.</span>
+<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">asyncErrors</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validateAsync</span><span style="color: #000000">();</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Result will be an array of `ValidationError[]`</span>
+<span style="color: #000000">  </span><span style="color: #795E26">if</span><span style="color: #000000"> (errors.length) {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Handle validation errors here, for example:</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">status</span><span style="color: #000000">(</span><span style="color: #098658">400</span><span style="color: #000000">).</span><span style="color: #795E26">json</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Your input is guaranteed to be validated at this point.</span>
+<span style="color: #000000">  </span><span style="color: #267F99">await</span><span style="color: #000000"> </span><span style="color: #267F99">Users</span><span style="color: #000000">.</span><span style="color: #267F99">register</span><span style="color: #000000">(</span><span style="color: #267F99">input</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">}</span>
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/datatransferobject.html" class="tsd-kind-icon">Data<wbr>Transfer<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/metadatastorage.html" class="tsd-kind-icon">Metadata<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/validationerror.html" class="tsd-kind-icon">Validation<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/validationtypes.html" class="tsd-kind-icon">Validation<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/validator.html" class="tsd-kind-icon">Validator</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/isnumberoptions.html" class="tsd-kind-icon">Is<wbr>Number<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/usecontaineroptions.html" class="tsd-kind-icon">Use<wbr>Container<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validatebyoptions.html" class="tsd-kind-icon">Validate<wbr>ByOptions</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validationarguments.html" class="tsd-kind-icon">Validation<wbr>Arguments</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validationdecoratoroptions.html" class="tsd-kind-icon">Validation<wbr>Decorator<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validationoptions.html" class="tsd-kind-icon">Validation<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validationschema.html" class="tsd-kind-icon">Validation<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validatorconstraintinterface.html" class="tsd-kind-icon">Validator<wbr>Constraint<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/validatoroptions.html" class="tsd-kind-icon">Validator<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="modules.html#arrayuniqueidentifier" class="tsd-kind-icon">Array<wbr>Unique<wbr>Identifier</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="modules.html#data" class="tsd-kind-icon">Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="modules.html#isisbnversion" class="tsd-kind-icon">IsISBNVersion</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="modules.html#isipversion" class="tsd-kind-icon">Is<wbr>IpVersion</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="modules.html#uuidversion" class="tsd-kind-icon">UUIDVersion</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_contains" class="tsd-kind-icon">ARRAY_<wbr>CONTAINS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_max_size" class="tsd-kind-icon">ARRAY_<wbr>MAX_<wbr>SIZE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_min_size" class="tsd-kind-icon">ARRAY_<wbr>MIN_<wbr>SIZE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_not_contains" class="tsd-kind-icon">ARRAY_<wbr>NOT_<wbr>CONTAINS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_not_empty" class="tsd-kind-icon">ARRAY_<wbr>NOT_<wbr>EMPTY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#array_unique" class="tsd-kind-icon">ARRAY_<wbr>UNIQUE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#contains" class="tsd-kind-icon">CONTAINS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#equals" class="tsd-kind-icon">EQUALS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_alpha" class="tsd-kind-icon">IS_<wbr>ALPHA</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_alphanumeric" class="tsd-kind-icon">IS_<wbr>ALPHANUMERIC</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_array" class="tsd-kind-icon">IS_<wbr>ARRAY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_ascii" class="tsd-kind-icon">IS_<wbr>ASCII</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_base32" class="tsd-kind-icon">IS_<wbr>BASE32</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_base64" class="tsd-kind-icon">IS_<wbr>BASE64</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_bic" class="tsd-kind-icon">IS_<wbr>BIC</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_boolean" class="tsd-kind-icon">IS_<wbr>BOOLEAN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_boolean_string" class="tsd-kind-icon">IS_<wbr>BOOLEAN_<wbr>STRING</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_btc_address" class="tsd-kind-icon">IS_<wbr>BTC_<wbr>ADDRESS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_byte_length" class="tsd-kind-icon">IS_<wbr>BYTE_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_credit_card" class="tsd-kind-icon">IS_<wbr>CREDIT_<wbr>CARD</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_currency" class="tsd-kind-icon">IS_<wbr>CURRENCY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_data_uri" class="tsd-kind-icon">IS_<wbr>DATA_<wbr>URI</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_date" class="tsd-kind-icon">IS_<wbr>DATE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_date_string" class="tsd-kind-icon">IS_<wbr>DATE_<wbr>STRING</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_decimal" class="tsd-kind-icon">IS_<wbr>DECIMAL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_defined" class="tsd-kind-icon">IS_<wbr>DEFINED</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_divisible_by" class="tsd-kind-icon">IS_<wbr>DIVISIBLE_<wbr>BY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_ean" class="tsd-kind-icon">IS_<wbr>EAN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_email" class="tsd-kind-icon">IS_<wbr>EMAIL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_empty" class="tsd-kind-icon">IS_<wbr>EMPTY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_enum" class="tsd-kind-icon">IS_<wbr>ENUM</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_ethereum_address" class="tsd-kind-icon">IS_<wbr>ETHEREUM_<wbr>ADDRESS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_firebase_push_id" class="tsd-kind-icon">IS_<wbr>FIREBASE_<wbr>PUSH_<wbr>ID</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_fqdn" class="tsd-kind-icon">IS_<wbr>FQDN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_full_width" class="tsd-kind-icon">IS_<wbr>FULL_<wbr>WIDTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_half_width" class="tsd-kind-icon">IS_<wbr>HALF_<wbr>WIDTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_hash" class="tsd-kind-icon">IS_<wbr>HASH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_hexadecimal" class="tsd-kind-icon">IS_<wbr>HEXADECIMAL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_hex_color" class="tsd-kind-icon">IS_<wbr>HEX_<wbr>COLOR</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_hsl" class="tsd-kind-icon">IS_<wbr>HSL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_iban" class="tsd-kind-icon">IS_<wbr>IBAN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_identity_card" class="tsd-kind-icon">IS_<wbr>IDENTITY_<wbr>CARD</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_in" class="tsd-kind-icon">IS_<wbr>IN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_instance" class="tsd-kind-icon">IS_<wbr>INSTANCE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_int" class="tsd-kind-icon">IS_<wbr>INT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_ip" class="tsd-kind-icon">IS_<wbr>IP</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_isbn" class="tsd-kind-icon">IS_<wbr>ISBN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_isin" class="tsd-kind-icon">IS_<wbr>ISIN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_iso31661_alpha_2" class="tsd-kind-icon">IS_<wbr>ISO31661_<wbr>ALPHA_<wbr>2</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_iso31661_alpha_3" class="tsd-kind-icon">IS_<wbr>ISO31661_<wbr>ALPHA_<wbr>3</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_iso8601" class="tsd-kind-icon">IS_<wbr>ISO8601</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_isrc" class="tsd-kind-icon">IS_<wbr>ISRC</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_issn" class="tsd-kind-icon">IS_<wbr>ISSN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_json" class="tsd-kind-icon">IS_<wbr>JSON</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_jwt" class="tsd-kind-icon">IS_<wbr>JWT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_latitude" class="tsd-kind-icon">IS_<wbr>LATITUDE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_latlong" class="tsd-kind-icon">IS_<wbr>LATLONG</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_length" class="tsd-kind-icon">IS_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_locale" class="tsd-kind-icon">IS_<wbr>LOCALE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_longitude" class="tsd-kind-icon">IS_<wbr>LONGITUDE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_lowercase" class="tsd-kind-icon">IS_<wbr>LOWERCASE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_mac_address" class="tsd-kind-icon">IS_<wbr>MAC_<wbr>ADDRESS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_magnet_uri" class="tsd-kind-icon">IS_<wbr>MAGNET_<wbr>URI</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_military_time" class="tsd-kind-icon">IS_<wbr>MILITARY_<wbr>TIME</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_mime_type" class="tsd-kind-icon">IS_<wbr>MIME_<wbr>TYPE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_mobile_phone" class="tsd-kind-icon">IS_<wbr>MOBILE_<wbr>PHONE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_mongo_id" class="tsd-kind-icon">IS_<wbr>MONGO_<wbr>ID</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_multibyte" class="tsd-kind-icon">IS_<wbr>MULTIBYTE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_negative" class="tsd-kind-icon">IS_<wbr>NEGATIVE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_not_empty" class="tsd-kind-icon">IS_<wbr>NOT_<wbr>EMPTY</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_not_empty_object" class="tsd-kind-icon">IS_<wbr>NOT_<wbr>EMPTY_<wbr>OBJECT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_not_in" class="tsd-kind-icon">IS_<wbr>NOT_<wbr>IN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_number" class="tsd-kind-icon">IS_<wbr>NUMBER</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_number_string" class="tsd-kind-icon">IS_<wbr>NUMBER_<wbr>STRING</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_object" class="tsd-kind-icon">IS_<wbr>OBJECT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_octal" class="tsd-kind-icon">IS_<wbr>OCTAL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_passport_number" class="tsd-kind-icon">IS_<wbr>PASSPORT_<wbr>NUMBER</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_phone_number" class="tsd-kind-icon">IS_<wbr>PHONE_<wbr>NUMBER</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_port" class="tsd-kind-icon">IS_<wbr>PORT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_positive" class="tsd-kind-icon">IS_<wbr>POSITIVE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_postal_code" class="tsd-kind-icon">IS_<wbr>POSTAL_<wbr>CODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_rfc_3339" class="tsd-kind-icon">IS_<wbr>RFC_<wbr>3339</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_rgb_color" class="tsd-kind-icon">IS_<wbr>RGB_<wbr>COLOR</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_sem_ver" class="tsd-kind-icon">IS_<wbr>SEM_<wbr>VER</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_string" class="tsd-kind-icon">IS_<wbr>STRING</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_surrogate_pair" class="tsd-kind-icon">IS_<wbr>SURROGATE_<wbr>PAIR</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_uppercase" class="tsd-kind-icon">IS_<wbr>UPPERCASE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_url" class="tsd-kind-icon">IS_<wbr>URL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_uuid" class="tsd-kind-icon">IS_<wbr>UUID</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#is_variable_width" class="tsd-kind-icon">IS_<wbr>VARIABLE_<wbr>WIDTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#matches" class="tsd-kind-icon">MATCHES</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#max" class="tsd-kind-icon">MAX</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#max_date" class="tsd-kind-icon">MAX_<wbr>DATE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#max_length" class="tsd-kind-icon">MAX_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#min" class="tsd-kind-icon">MIN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#min_date" class="tsd-kind-icon">MIN_<wbr>DATE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#min_length" class="tsd-kind-icon">MIN_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#not_contains" class="tsd-kind-icon">NOT_<wbr>CONTAINS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="modules.html#not_equals" class="tsd-kind-icon">NOT_<wbr>EQUALS</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#allow" class="tsd-kind-icon">Allow</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraycontains" class="tsd-kind-icon">Array<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraymaxsize" class="tsd-kind-icon">Array<wbr>Max<wbr>Size</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arrayminsize" class="tsd-kind-icon">Array<wbr>Min<wbr>Size</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraynotcontains" class="tsd-kind-icon">Array<wbr>Not<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraynotempty" class="tsd-kind-icon">Array<wbr>Not<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="modules.html#arrayunique" class="tsd-kind-icon">Array<wbr>Unique</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#contains" class="tsd-kind-icon">Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#equals" class="tsd-kind-icon">Equals</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isalpha" class="tsd-kind-icon">Is<wbr>Alpha</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isalphanumeric" class="tsd-kind-icon">Is<wbr>Alphanumeric</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isarray" class="tsd-kind-icon">Is<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isascii" class="tsd-kind-icon">Is<wbr>Ascii</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbic" class="tsd-kind-icon">IsBIC</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbase32" class="tsd-kind-icon">Is<wbr>Base32</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbase64" class="tsd-kind-icon">Is<wbr>Base64</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isboolean" class="tsd-kind-icon">Is<wbr>Boolean</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbooleanstring" class="tsd-kind-icon">Is<wbr>Boolean<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbtcaddress" class="tsd-kind-icon">Is<wbr>Btc<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbytelength" class="tsd-kind-icon">Is<wbr>Byte<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#iscreditcard" class="tsd-kind-icon">Is<wbr>Credit<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#iscurrency" class="tsd-kind-icon">Is<wbr>Currency</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdatauri" class="tsd-kind-icon">Is<wbr>DataURI</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdate" class="tsd-kind-icon">Is<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdatestring" class="tsd-kind-icon">Is<wbr>Date<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdecimal" class="tsd-kind-icon">Is<wbr>Decimal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdefined" class="tsd-kind-icon">Is<wbr>Defined</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdivisibleby" class="tsd-kind-icon">Is<wbr>Divisible<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isean" class="tsd-kind-icon">IsEAN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isemail" class="tsd-kind-icon">Is<wbr>Email</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isempty" class="tsd-kind-icon">Is<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isenum" class="tsd-kind-icon">Is<wbr>Enum</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isethereumaddress" class="tsd-kind-icon">Is<wbr>Ethereum<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfqdn" class="tsd-kind-icon">IsFQDN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfirebasepushid" class="tsd-kind-icon">Is<wbr>Firebase<wbr>Push<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfullwidth" class="tsd-kind-icon">Is<wbr>Full<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishsl" class="tsd-kind-icon">IsHSL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishalfwidth" class="tsd-kind-icon">Is<wbr>Half<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishash" class="tsd-kind-icon">Is<wbr>Hash</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishexcolor" class="tsd-kind-icon">Is<wbr>Hex<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishexadecimal" class="tsd-kind-icon">Is<wbr>Hexadecimal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiban" class="tsd-kind-icon">IsIBAN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isip" class="tsd-kind-icon">IsIP</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisbn" class="tsd-kind-icon">IsISBN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisin" class="tsd-kind-icon">IsISIN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso31661alpha2" class="tsd-kind-icon">IsISO31661<wbr>Alpha2</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso31661alpha3" class="tsd-kind-icon">IsISO31661<wbr>Alpha3</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso8601" class="tsd-kind-icon">IsISO8601</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisrc" class="tsd-kind-icon">IsISRC</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isissn" class="tsd-kind-icon">IsISSN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isidentitycard" class="tsd-kind-icon">Is<wbr>Identity<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isin" class="tsd-kind-icon">Is<wbr>In</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isinstance" class="tsd-kind-icon">Is<wbr>Instance</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isint" class="tsd-kind-icon">Is<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isjson" class="tsd-kind-icon">IsJSON</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isjwt" class="tsd-kind-icon">IsJWT</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islatlong" class="tsd-kind-icon">Is<wbr>Lat<wbr>Long</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islatitude" class="tsd-kind-icon">Is<wbr>Latitude</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islocale" class="tsd-kind-icon">Is<wbr>Locale</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islongitude" class="tsd-kind-icon">Is<wbr>Longitude</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islowercase" class="tsd-kind-icon">Is<wbr>Lowercase</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismacaddress" class="tsd-kind-icon">IsMACAddress</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismagneturi" class="tsd-kind-icon">Is<wbr>MagnetURI</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismilitarytime" class="tsd-kind-icon">Is<wbr>Military<wbr>Time</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismimetype" class="tsd-kind-icon">Is<wbr>Mime<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismobilephone" class="tsd-kind-icon">Is<wbr>Mobile<wbr>Phone</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismongoid" class="tsd-kind-icon">Is<wbr>Mongo<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismultibyte" class="tsd-kind-icon">Is<wbr>Multibyte</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnegative" class="tsd-kind-icon">Is<wbr>Negative</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotempty" class="tsd-kind-icon">Is<wbr>Not<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotemptyobject" class="tsd-kind-icon">Is<wbr>Not<wbr>Empty<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotin" class="tsd-kind-icon">Is<wbr>Not<wbr>In</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnumber" class="tsd-kind-icon">Is<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnumberstring" class="tsd-kind-icon">Is<wbr>Number<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isobject" class="tsd-kind-icon">Is<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isoctal" class="tsd-kind-icon">Is<wbr>Octal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isoptional" class="tsd-kind-icon">Is<wbr>Optional</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispassportnumber" class="tsd-kind-icon">Is<wbr>Passport<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isphonenumber" class="tsd-kind-icon">Is<wbr>Phone<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isport" class="tsd-kind-icon">Is<wbr>Port</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispositive" class="tsd-kind-icon">Is<wbr>Positive</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispostalcode" class="tsd-kind-icon">Is<wbr>Postal<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isrfc3339" class="tsd-kind-icon">IsRFC3339</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isrgbcolor" class="tsd-kind-icon">Is<wbr>Rgb<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#issemver" class="tsd-kind-icon">Is<wbr>Sem<wbr>Ver</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isstring" class="tsd-kind-icon">Is<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#issurrogatepair" class="tsd-kind-icon">Is<wbr>Surrogate<wbr>Pair</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isuuid" class="tsd-kind-icon">IsUUID</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isuppercase" class="tsd-kind-icon">Is<wbr>Uppercase</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isurl" class="tsd-kind-icon">Is<wbr>Url</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isvariablewidth" class="tsd-kind-icon">Is<wbr>Variable<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#length" class="tsd-kind-icon">Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#matches" class="tsd-kind-icon">Matches</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#max" class="tsd-kind-icon">Max</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#maxdate" class="tsd-kind-icon">Max<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#maxlength" class="tsd-kind-icon">Max<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#min" class="tsd-kind-icon">Min</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#mindate" class="tsd-kind-icon">Min<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#minlength" class="tsd-kind-icon">Min<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#notcontains" class="tsd-kind-icon">Not<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#notequals" class="tsd-kind-icon">Not<wbr>Equals</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validate" class="tsd-kind-icon">Validate</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validateby" class="tsd-kind-icon">Validate<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validateif" class="tsd-kind-icon">Validate<wbr>If</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validatenested" class="tsd-kind-icon">Validate<wbr>Nested</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validatepromise" class="tsd-kind-icon">Validate<wbr>Promise</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validatorconstraint" class="tsd-kind-icon">Validator<wbr>Constraint</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraycontains" class="tsd-kind-icon">array<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraymaxsize" class="tsd-kind-icon">array<wbr>Max<wbr>Size</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arrayminsize" class="tsd-kind-icon">array<wbr>Min<wbr>Size</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraynotcontains" class="tsd-kind-icon">array<wbr>Not<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arraynotempty" class="tsd-kind-icon">array<wbr>Not<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#arrayunique" class="tsd-kind-icon">array<wbr>Unique</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#buildmessage" class="tsd-kind-icon">build<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#contains" class="tsd-kind-icon">contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#equals" class="tsd-kind-icon">equals</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="modules.html#getfromcontainer" class="tsd-kind-icon">get<wbr>From<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#getmetadatastorage" class="tsd-kind-icon">get<wbr>Metadata<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isalpha" class="tsd-kind-icon">is<wbr>Alpha</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isalphanumeric" class="tsd-kind-icon">is<wbr>Alphanumeric</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isascii" class="tsd-kind-icon">is<wbr>Ascii</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbic" class="tsd-kind-icon">isBIC</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbase32" class="tsd-kind-icon">is<wbr>Base32</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbase64" class="tsd-kind-icon">is<wbr>Base64</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isboolean" class="tsd-kind-icon">is<wbr>Boolean</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbooleanstring" class="tsd-kind-icon">is<wbr>Boolean<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbtcaddress" class="tsd-kind-icon">is<wbr>Btc<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isbytelength" class="tsd-kind-icon">is<wbr>Byte<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#iscreditcard" class="tsd-kind-icon">is<wbr>Credit<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#iscurrency" class="tsd-kind-icon">is<wbr>Currency</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdatauri" class="tsd-kind-icon">is<wbr>DataURI</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdate" class="tsd-kind-icon">is<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdatestring" class="tsd-kind-icon">is<wbr>Date<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdecimal" class="tsd-kind-icon">is<wbr>Decimal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isdivisibleby" class="tsd-kind-icon">is<wbr>Divisible<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isean" class="tsd-kind-icon">isEAN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isemail" class="tsd-kind-icon">is<wbr>Email</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isenum" class="tsd-kind-icon">is<wbr>Enum</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isethereumaddress" class="tsd-kind-icon">is<wbr>Ethereum<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfqdn" class="tsd-kind-icon">isFQDN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfirebasepushid" class="tsd-kind-icon">is<wbr>Firebase<wbr>Push<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isfullwidth" class="tsd-kind-icon">is<wbr>Full<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishsl" class="tsd-kind-icon">isHSL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishalfwidth" class="tsd-kind-icon">is<wbr>Half<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishash" class="tsd-kind-icon">is<wbr>Hash</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishexcolor" class="tsd-kind-icon">is<wbr>Hex<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ishexadecimal" class="tsd-kind-icon">is<wbr>Hexadecimal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiban" class="tsd-kind-icon">isIBAN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isip" class="tsd-kind-icon">isIP</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisbn" class="tsd-kind-icon">isISBN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisin" class="tsd-kind-icon">isISIN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso31661alpha2" class="tsd-kind-icon">isISO31661<wbr>Alpha2</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso31661alpha3" class="tsd-kind-icon">isISO31661<wbr>Alpha3</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isiso8601" class="tsd-kind-icon">isISO8601</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isisrc" class="tsd-kind-icon">isISRC</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isissn" class="tsd-kind-icon">isISSN</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isidentitycard" class="tsd-kind-icon">is<wbr>Identity<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isin" class="tsd-kind-icon">is<wbr>In</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isinstance" class="tsd-kind-icon">is<wbr>Instance</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isint" class="tsd-kind-icon">is<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isjson" class="tsd-kind-icon">isJSON</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isjwt" class="tsd-kind-icon">isJWT</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islatlong" class="tsd-kind-icon">is<wbr>Lat<wbr>Long</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islatitude" class="tsd-kind-icon">is<wbr>Latitude</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islocale" class="tsd-kind-icon">is<wbr>Locale</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islongitude" class="tsd-kind-icon">is<wbr>Longitude</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#islowercase" class="tsd-kind-icon">is<wbr>Lowercase</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismacaddress" class="tsd-kind-icon">isMACAddress</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismagneturi" class="tsd-kind-icon">is<wbr>MagnetURI</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismilitarytime" class="tsd-kind-icon">is<wbr>Military<wbr>Time</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismimetype" class="tsd-kind-icon">is<wbr>Mime<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismobilephone" class="tsd-kind-icon">is<wbr>Mobile<wbr>Phone</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismongoid" class="tsd-kind-icon">is<wbr>Mongo<wbr>Id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ismultibyte" class="tsd-kind-icon">is<wbr>Multibyte</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnegative" class="tsd-kind-icon">is<wbr>Negative</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotempty" class="tsd-kind-icon">is<wbr>Not<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotemptyobject" class="tsd-kind-icon">is<wbr>Not<wbr>Empty<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnotin" class="tsd-kind-icon">is<wbr>Not<wbr>In</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isnumberstring" class="tsd-kind-icon">is<wbr>Number<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isobject" class="tsd-kind-icon">is<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isoctal" class="tsd-kind-icon">is<wbr>Octal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispassportnumber" class="tsd-kind-icon">is<wbr>Passport<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isphonenumber" class="tsd-kind-icon">is<wbr>Phone<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isport" class="tsd-kind-icon">is<wbr>Port</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispositive" class="tsd-kind-icon">is<wbr>Positive</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#ispostalcode" class="tsd-kind-icon">is<wbr>Postal<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isrfc3339" class="tsd-kind-icon">isRFC3339</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isrgbcolor" class="tsd-kind-icon">is<wbr>Rgb<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#issemver" class="tsd-kind-icon">is<wbr>Sem<wbr>Ver</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isstring" class="tsd-kind-icon">is<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#issurrogatepair" class="tsd-kind-icon">is<wbr>Surrogate<wbr>Pair</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isurl" class="tsd-kind-icon">isURL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isuuid" class="tsd-kind-icon">isUUID</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isuppercase" class="tsd-kind-icon">is<wbr>Uppercase</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isvalidationoptions" class="tsd-kind-icon">is<wbr>Validation<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#isvariablewidth" class="tsd-kind-icon">is<wbr>Variable<wbr>Width</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#length" class="tsd-kind-icon">length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#matches" class="tsd-kind-icon">matches</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#max" class="tsd-kind-icon">max</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#maxdate" class="tsd-kind-icon">max<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#maxlength" class="tsd-kind-icon">max<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#min" class="tsd-kind-icon">min</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#mindate" class="tsd-kind-icon">min<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#minlength" class="tsd-kind-icon">min<wbr>Length</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#notcontains" class="tsd-kind-icon">not<wbr>Contains</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#notequals" class="tsd-kind-icon">not<wbr>Equals</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#registerdecorator" class="tsd-kind-icon">register<wbr>Decorator</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#registerschema" class="tsd-kind-icon">register<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#usecontainer" class="tsd-kind-icon">use<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validate" class="tsd-kind-icon">validate</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validateorreject" class="tsd-kind-icon">validate<wbr>OrReject</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="modules.html#validatesync" class="tsd-kind-icon">validate<wbr>Sync</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
