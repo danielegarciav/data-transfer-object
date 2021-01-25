@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "description": "Data Transfer Object class built on `class-validator`.",
   "keywords": [
+    "validation",
+    "validator",
+    "typescript",
     "data-transfer-object",
     "dto"
   ],
   "author": "Daniel Garcia <danielegarciav@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielegarciav/data-transfer-object.git"
+  },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/cjs/index.d.ts",
