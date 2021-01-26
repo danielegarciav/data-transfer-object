@@ -11,6 +11,7 @@
   ],
   "author": "Daniel Garcia <danielegarciav@gmail.com>",
   "license": "MIT",
+  "homepage": "https://danielegarciav.github.io/data-transfer-object/",
   "repository": {
     "type": "git",
     "url": "https://github.com/danielegarciav/data-transfer-object.git"
