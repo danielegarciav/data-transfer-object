@@ -37,7 +37,7 @@ UMD builds aren't available yet. Rollup builds are planned for the future.
 Create a DTO class by importing `DataTransferObject`, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from [TypeStack's `class-validator`](https://github.com/typestack/class-validator).
 
 ```typescript
-import { DataTransferObject } from 'data-transfer-object';
+import { DataTransferObject, IsString } from 'data-transfer-object';
 
 class MyDto extends DataTransferObject {
   // Insert decorated properties here

@@ -99,7 +99,7 @@
 					<h2>Usage</h2>
 				</a>
 				<p>Create a DTO class by importing <code>DataTransferObject</code>, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from <a href="https://github.com/typestack/class-validator">TypeStack&#39;s <code>class-validator</code></a>.</p>
-				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DataTransferObject</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DataTransferObject</span><span style="color: #000000">, </span><span style="color: #001080">IsString</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
 
 <span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">DataTransferObject</span><span style="color: #000000"> {</span>
 <span style="color: #000000">  </span><span style="color: #008000">// Insert decorated properties here</span>
