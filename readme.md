@@ -1,6 +1,6 @@
 # data-transfer-object
 
-Data Transfer Object class built on `class-validator`. Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.
+Data Transfer Object class built on [TypeStacks's `class-validator`](https://github.com/typestack/class-validator). Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -32,7 +32,7 @@ UMD builds aren't available yet.
 
 # Usage
 
-Create a DTO class by importing `DataTransferObject` and extending it with your custom properties. This package re-exports all decorators and functions from `class-validator`.
+Create a DTO class by importing `DataTransferObject`, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from [TypeStack's `class-validator`](https://github.com/typestack/class-validator).
 
 Note that when using TypeScript with `"strict": true`, you must use non-null assertions (`!:`) when declaring class properties. Also, `experimentalDecorators` and `emitDecoratorMetadata` must be set to `true` in your `tsconfig.json`.
 
