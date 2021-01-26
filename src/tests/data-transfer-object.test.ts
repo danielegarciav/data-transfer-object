@@ -103,4 +103,23 @@ describe('data-transfer-object', () => {
     ]);
     expect(CVMock.validate).toBeCalledTimes(1);
   });
+
+  it('detects proper errors on unknown properties when requested', () => {
+    {
+      const inputData = { username: 'username', password: 'password', extra: 1 };
+      const input = new UserSignupInput(inputData);
+      const errorsNonWhitelisted = input.validate({ forbidNonWhitelisted: true });
+      expect(errorsNonWhitelisted).toBeArrayOfSize(1);
+      const errorsUnknownValues = input.validate({ forbidUnknownValues: true });
+      expect(errorsUnknownValues).toBeArrayOfSize(1);
+    }
+    {
+      const inputData = { username: 'username', password: 'password' };
+      const input = new UserSignupInput(inputData);
+      const errorsNonWhitelisted = input.validate({ forbidNonWhitelisted: true });
+      expect(errorsNonWhitelisted).toBeArrayOfSize(0);
+      const errorsUnknownValues = input.validate({ forbidUnknownValues: true });
+      expect(errorsUnknownValues).toBeArrayOfSize(0);
+    }
+  });
 });
