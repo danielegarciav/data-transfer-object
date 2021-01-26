@@ -1,1 +1,7 @@
 tests
+coverage
+docs
+jest.config.ts
+.editorconfig
+.eslintrc.js
+.prettierrc
