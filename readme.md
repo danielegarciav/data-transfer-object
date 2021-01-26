@@ -94,3 +94,8 @@ export async function signup(req: Request, res: Response): {
   return res.status(200).json({ success: true });
 }
 ```
+
+## Development
+
+Check package.json to find scripts related to installing dependencies, building, testing, linting and generating documentation.
+
