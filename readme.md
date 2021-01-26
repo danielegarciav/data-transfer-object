@@ -10,6 +10,7 @@ Data Transfer Object class built on [TypeStacks's `class-validator`](https://git
   - [For Node.js and bundlers (Webpack, Rollup, etc)](#for-nodejs-and-bundlers-webpack-rollup-etc)
   - [For browsers (script tag)](#for-browsers-script-tag)
 - [Usage](#usage)
+  - [TypeScript notes](#typescript-notes)
 - [Documentation](#documentation)
 - [Example](#example)
 - [Development](#development)
@@ -40,14 +41,51 @@ import { DataTransferObject } from 'data-transfer-object';
 
 class MyDto extends DataTransferObject {
   // Insert decorated properties here
+  @IsString()
+  myString: string;
 }
 ```
+
+Once your class is defined, you can instantiate it, pass your input into it, and validate it:
+
+```typescript
+const input = new MyDto({ myString: 12 });
+const errors = input.validate();
+
+// `errors` will be an array of `ValidationError` objects.
+console.log(errors);
+
+// outputs:
+[
+  {
+    target: { myString: 12 },
+    value: 12,
+    property: 'myString',
+    children: [],
+    constraints: { isString: 'myString must be a string' },
+  },
+];
+```
+
+Validating it will also silently drop all unknown properties from the input:
+
+```typescript
+const input = new MyDto({ myString: 'a', myOtherString: 'b' });
+const errors = input.validate();
+
+console.log(errors); // []
+console.log(input); // { myString: 'a' }
+```
+
+Take a look at [`class-validator`'s documentation](https://github.com/typestack/class-validator/) to get information on all available validators and validation options.
+
+### TypeScript notes
 
 Note that when using TypeScript with `"strict": true`, you must use non-null assertions (`!:`) when declaring class properties. Also, `experimentalDecorators` and `emitDecoratorMetadata` must be set to `true` in your `tsconfig.json`.
 
 ## Documentation
 
-The most up-to-date documentation is automatically generated from code and available at https://danielegarciav.github.io/data-transfer-object/.
+The most up-to-date documentation for all exported items from this package is automatically generated from code and available at https://danielegarciav.github.io/data-transfer-object/.
 
 ## Example
 
