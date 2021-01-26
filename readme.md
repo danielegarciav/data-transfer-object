@@ -85,7 +85,12 @@ export async function signup(req: Request, res: Response): {
   // Your input is guaranteed to be validated at this point.
   await Users.register(input);
 
+  // Use `.toJSON()` to get a plain object with just your data.
+  // `.toJSON()` is automatically called when a DTO instance is stringified.
+  const data = input.toJSON();
+  typeof input.validate === 'function';
+  typeof data.validate === 'undefined';
 
-
+  return res.status(200).json({ success: true });
 }
 ```
