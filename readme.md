@@ -36,6 +36,10 @@ Create a DTO class by importing `DataTransferObject`, extending it with your cus
 
 Note that when using TypeScript with `"strict": true`, you must use non-null assertions (`!:`) when declaring class properties. Also, `experimentalDecorators` and `emitDecoratorMetadata` must be set to `true` in your `tsconfig.json`.
 
+## Documentation
+
+The most up-to-date documentation is automatically generated from code and available at https://danielegarciav.github.io/data-transfer-object/.
+
 ```typescript
 // input-dtos.ts
 
