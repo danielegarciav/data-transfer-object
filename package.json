@@ -19,6 +19,7 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/cjs/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "clean": "rimraf -rf ./lib",
     "build": "npm run clean && npm run compile:cjs && npm run compile:esm",
