@@ -11,6 +11,15 @@ const defaultOpts: ValidatorOptions = {
   whitelist: true,
 };
 
+// Must use symbols for private properties so that they are not included in validation
+
+/** Cached validation errors from previous validation. */
+const validationErrors = Symbol.for('validationErrors');
+/** Whether this object has already been validated. */
+const validated = Symbol.for('validated');
+/** Pending validation promise, if any. */
+const ongoingValidation = Symbol.for('ongoingValidation');
+
 /**
  * Creates a new data transfer object which will validate and reshape its input
  * data based on the validators of its own properties. Must be extended, should
@@ -18,11 +27,11 @@ const defaultOpts: ValidatorOptions = {
  */
 export abstract class DataTransferObject {
   /** Cached validation errors from previous validation. */
-  private _validationErrors: ValidationError[] = [];
+  private [validationErrors]: ValidationError[] = [];
   /** Whether this object has already been validated. */
-  private _validated = false;
+  private [validated] = false;
   /** Pending validation promise, if any. */
-  private _ongoingValidation?: Promise<ValidationError[]>;
+  private [ongoingValidation]?: Promise<ValidationError[]>;
 
   /**
    * Constructs a new instance of a data transfer object with the given input.
@@ -38,10 +47,10 @@ export abstract class DataTransferObject {
    * @param opts Options to pass to the validator system.
    */
   validate(opts?: ValidatorOptions): ValidationError[] {
-    if (this._validated) return this._validationErrors;
-    this._validationErrors = validateSync(this, { ...defaultOpts, ...opts });
-    this._validated = true;
-    return this._validationErrors;
+    if (this[validated]) return this[validationErrors];
+    this[validationErrors] = validateSync(this, { ...defaultOpts, ...opts });
+    this[validated] = true;
+    return this[validationErrors];
   }
 
   /**
@@ -50,15 +59,20 @@ export abstract class DataTransferObject {
    * @param opts Options to pass to the validator system.
    */
   async validateAsync(opts?: ValidatorOptions): Promise<ValidationError[]> {
-    if (this._validated) return this._validationErrors;
-    if (this._ongoingValidation) return this._ongoingValidation;
-    this._ongoingValidation = validate(this, { ...defaultOpts, ...opts }).then(errs => {
-      this._validationErrors = errs;
-      this._validated = true;
-      this._ongoingValidation = undefined;
+    if (this[validated]) return this[validationErrors];
+
+    const ongoing = this[ongoingValidation];
+    if (ongoing) return ongoing;
+
+    const newPromise = validate(this, { ...defaultOpts, ...opts }).then(errs => {
+      this[validationErrors] = errs;
+      this[validated] = true;
+      this[ongoingValidation] = undefined;
       return errs;
     });
-    return this._ongoingValidation;
+
+    this[ongoingValidation] = newPromise;
+    return newPromise;
   }
 
   /**
