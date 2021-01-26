@@ -4,21 +4,22 @@ Data Transfer Object class built on [TypeStacks's `class-validator`](https://git
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 **Table of contents**
 
-- [data-transfer-object](#data-transfer-object)
 - [Installation](#installation)
   - [For Node.js and bundlers (Webpack, Rollup, etc)](#for-nodejs-and-bundlers-webpack-rollup-etc)
-  - [Direct script tag in browser](#direct-script-tag-in-browser)
+  - [For browsers (script tag)](#for-browsers-script-tag)
 - [Usage](#usage)
-  - [Example](#example)
+- [Documentation](#documentation)
+- [Example](#example)
+- [Development](#development)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Installation
+## Installation
 
-## For Node.js and bundlers (Webpack, Rollup, etc)
+### For Node.js and bundlers (Webpack, Rollup, etc)
 
 ```bash
 npm i data-transfer-object
@@ -26,11 +27,11 @@ npm i data-transfer-object
 yarn add data-transfer-object
 ```
 
-## Direct script tag in browser
+### For browsers (script tag)
 
-UMD builds aren't available yet.
+UMD builds aren't available yet. Rollup builds are planned for the future.
 
-# Usage
+## Usage
 
 Create a DTO class by importing `DataTransferObject`, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from [TypeStack's `class-validator`](https://github.com/typestack/class-validator).
 
