@@ -34,16 +34,28 @@ UMD builds aren't available yet.
 
 Create a DTO class by importing `DataTransferObject`, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from [TypeStack's `class-validator`](https://github.com/typestack/class-validator).
 
+```typescript
+import { DataTransferObject } from 'data-transfer-object';
+
+class MyDto extends DataTransferObject {
+  // Insert decorated properties here
+}
+```
+
 Note that when using TypeScript with `"strict": true`, you must use non-null assertions (`!:`) when declaring class properties. Also, `experimentalDecorators` and `emitDecoratorMetadata` must be set to `true` in your `tsconfig.json`.
 
 ## Documentation
 
 The most up-to-date documentation is automatically generated from code and available at https://danielegarciav.github.io/data-transfer-object/.
 
+## Example
+
+In the following example, we have an Express application that lets us sign up users. In order to validate input from the web app client, we create a data transfer object representing the input data, and attach our desired validators:
+
 ```typescript
 // input-dtos.ts
 
-import { DataTransferObject, IsString } from 'data-transfer-object';
+import { DataTransferObject, IsString, Length, MinLength } from 'data-transfer-object';
 
 export class UserSignupInput extends DataTransferObject {
   @IsString()
@@ -60,14 +72,13 @@ export class UserSignupInput extends DataTransferObject {
 }
 ```
 
-### Example
-
-Take for example the following Express request handler, which signs up an user.
+The Express request handler in our example:
 
 ```typescript
 // signup-controller.ts
 
 import { Request, Response } from 'express';
+import { User } from './models';
 import { UserSignupInput } from './input-dtos';
 
 export async function signup(req: Request, res: Response): {
@@ -87,7 +98,7 @@ export async function signup(req: Request, res: Response): {
   }
 
   // Your input is guaranteed to be validated at this point.
-  await Users.register(input);
+  await User.register(input);
 
   // Use `.toJSON()` to get a plain object with just your data.
   // `.toJSON()` is automatically called when a DTO instance is stringified.
