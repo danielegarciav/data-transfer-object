@@ -81,7 +81,7 @@ export abstract class DataTransferObject {
    */
   toJSON(): Data<this> {
     return Object.fromEntries(
-      Object.entries(this).filter(([key, val]) => !key.startsWith('_') && typeof val !== 'function'),
+      Object.entries(this).filter(([_key, val]) => typeof val !== 'function'),
     ) as Data<this>;
   }
 }
