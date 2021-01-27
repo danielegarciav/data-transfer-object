@@ -1,11 +1,17 @@
 import { validate, validateSync, ValidationError, ValidatorOptions } from 'class-validator';
 export * from 'class-validator';
 
-/** Extract the data properties out of a Data Transfer Object. */
-export type Data<T extends DataTransferObject> = {
+// Simple conditional mapping turns function types into `never` types
+// In order to skip them entirely, we use the following:
+// https://stackoverflow.com/a/55483981/3247259
+
+type NonFunctionPropertyNames<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  [K in keyof T]: T[K] extends Function ? never : T[K];
-};
+  [K in keyof T]: T[K] extends Function ? never : K;
+}[keyof T];
+
+/** Extract the data properties out of a Data Transfer Object. */
+export type Data<T> = Pick<T, NonFunctionPropertyNames<T>>;
 
 const defaultOpts: ValidatorOptions = {
   whitelist: true,
