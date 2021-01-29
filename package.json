@@ -52,6 +52,7 @@
     "jest-extended": "^0.11.5",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
+    "standard-changelog": "^2.0.27",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
     "typedoc": "^0.20.19",
