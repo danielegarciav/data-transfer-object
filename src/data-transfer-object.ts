@@ -1,4 +1,7 @@
 import { validate, validateSync, ValidationError, ValidatorOptions } from 'class-validator';
+import { ValidationException } from './validation-exception';
+import { onValidationError } from './validation-error-handler';
+
 export * from 'class-validator';
 
 // Simple conditional mapping turns function types into `never` types
@@ -25,6 +28,18 @@ const validationErrors = Symbol.for('validationErrors');
 const validated = Symbol.for('validated');
 /** Pending validation promise, if any. */
 const ongoingValidation = Symbol.for('ongoingValidation');
+
+/**
+ * Checks the input error list, and if non-empty, throws an error.
+ * @param errors The error list to check against.
+ */
+function assertEmptyErrorList(errors: ValidationError[]) {
+  if (errors.length) {
+    if (!onValidationError) throw new ValidationException(errors);
+    onValidationError(errors);
+    throw new Error('Uncaught validation error');
+  }
+}
 
 /**
  * Creates a new data transfer object which will validate and reshape its input
@@ -79,6 +94,28 @@ export abstract class DataTransferObject {
 
     this[ongoingValidation] = newPromise;
     return newPromise;
+  }
+
+  /**
+   * Validates this object (sync validators only), and returns its plain data if validations pass.
+   * Otherwise, throws an error or runs the appropriate handler set with `setValidationErrorHandler()`.
+   * @param opts Options to pass to the validator system.
+   */
+  validate(opts?: ValidatorOptions): Data<this> {
+    const errors = this.getValidationErrors(opts);
+    assertEmptyErrorList(errors);
+    return this.toJSON();
+  }
+
+  /**
+   * Validates this object asynchronously, and resolves to its plain data if validations pass.
+   * Otherwise, rejects with an error or runs the appropriate handler set with `setValidationErrorHandler()`.
+   * @param opts Options to pass to the validator system.
+   */
+  async validateAsync(opts?: ValidatorOptions): Promise<Data<this>> {
+    const errors = await this.getValidationErrorsAsync(opts);
+    assertEmptyErrorList(errors);
+    return this.toJSON();
   }
 
   /**

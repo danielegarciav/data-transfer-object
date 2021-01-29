@@ -1,6 +1,8 @@
-import { mocked } from 'ts-jest';
+import { mocked } from 'ts-jest/utils';
 import { DataTransferObject } from '../data-transfer-object';
 import * as CVMock from 'class-validator';
+import { ValidationException } from '../validation-exception';
+import { setValidationErrorHandler, clearValidationErrorHandler } from '../validation-error-handler';
 
 jest.mock('class-validator');
 const { validateSync, validate, IsString, MinLength, Length } = jest.requireActual<
@@ -24,7 +26,18 @@ class UserSignupInput extends DataTransferObject {
   password!: string;
 }
 
+class TestError extends Error {}
+
+const handlerThatThrows = jest.fn((_errs: unknown) => {
+  throw new TestError();
+});
+
+const handlerThatDoesNotThrow = jest.fn((_errs: unknown) => {
+  // ignore error
+});
+
 beforeEach(() => {
+  clearValidationErrorHandler();
   jest.clearAllMocks();
 });
 
@@ -124,5 +137,52 @@ describe('data-transfer-object', () => {
       const errorsUnknownValues = input.getValidationErrors({ forbidUnknownValues: true });
       expect(errorsUnknownValues).toBeArrayOfSize(0);
     }
+  });
+
+  it('returns plain data on `.validate()` with valid object', () => {
+    const inputData = { username: 'username', password: 'password' };
+    const validation = () => new UserSignupInput(inputData).validate();
+    expect(validation).not.toThrow();
+
+    const output = validation();
+    expect(output).not.toBe(inputData);
+    expect(output).toEqual(inputData);
+  });
+
+  it('throws on `.validate()` with invalid object', () => {
+    const inputData = { username: 'username' };
+    const validation = () => new UserSignupInput(inputData).validate();
+    expect(validation).toThrowError(ValidationException);
+  });
+
+  it('resolves to plain data on `.validateAsync()` with valid object', async () => {
+    const inputData = { username: 'username', password: 'password' };
+    const validation = () => new UserSignupInput(inputData).validateAsync();
+    await expect(validation()).toResolve();
+
+    const output = await validation();
+    expect(output).not.toBe(inputData);
+    expect(output).toEqual(inputData);
+  });
+
+  it('rejects on `.validateAsync()` with invalid object', async () => {
+    const inputData = { username: 'username' };
+    const validation = () => new UserSignupInput(inputData).validateAsync();
+    await expect(validation()).rejects.toThrowError(ValidationException);
+  });
+
+  it('uses custom validation error handler when set', () => {
+    setValidationErrorHandler(handlerThatThrows);
+    const inputData = { username: 'username' };
+    const validation = () => new UserSignupInput(inputData).validate();
+    expect(validation).toThrowError(TestError);
+  });
+
+  it('throws error when custom validation error handler does not throw', () => {
+    /// @ts-expect-error: Handler should throw error, but this one does not.
+    setValidationErrorHandler(handlerThatDoesNotThrow);
+    const inputData = { username: 'username' };
+    const validation = () => new UserSignupInput(inputData).validate();
+    expect(validation).toThrowError();
   });
 });
