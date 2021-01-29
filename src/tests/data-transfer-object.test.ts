@@ -43,7 +43,7 @@ describe('data-transfer-object', () => {
     expect(errors).toBeArrayOfSize(2);
   });
 
-  it('is instance of DataTransferObject', () => {
+  it('subclass instance is instance of DataTransferObject', () => {
     const userSignupInput = new UserSignupInput({ username: '', password: '' });
     expect(userSignupInput).toBeInstanceOf(DataTransferObject);
   });
