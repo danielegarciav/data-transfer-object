@@ -2,8 +2,6 @@ import { validate, validateSync, ValidationError, ValidatorOptions } from 'class
 import { ValidationException } from './validation-exception';
 import { onValidationError } from './validation-error-handler';
 
-export * from 'class-validator';
-
 // Simple conditional mapping turns function types into `never` types
 // In order to skip them entirely, we use the following:
 // https://stackoverflow.com/a/55483981/3247259
