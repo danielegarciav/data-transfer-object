@@ -64,7 +64,7 @@ export abstract class DataTransferObject {
 
   /**
    * Runs all synchronous validators on this object.
-   * To run asynchronous validators as well, use `.validateAsync()`.
+   * To run asynchronous validators as well, use `.getValidationErrorsAsync()`.
    * @param opts Options to pass to the validator system.
    */
   getValidationErrors(opts?: ValidatorOptions): ValidationError[] {
@@ -76,7 +76,7 @@ export abstract class DataTransferObject {
 
   /**
    * Runs all synchronous and asynchronous validators on this object.
-   * Always returns a promise. To validate synchronously, use `.validate()`.
+   * Always returns a promise. To validate synchronously, use `.getValidationErrors()`.
    * @param opts Options to pass to the validator system.
    */
   async getValidationErrorsAsync(opts?: ValidatorOptions): Promise<ValidationError[]> {
@@ -99,6 +99,8 @@ export abstract class DataTransferObject {
   /**
    * Validates this object (sync validators only), and returns its plain data if validations pass.
    * Otherwise, throws an error or runs the appropriate handler set with `setValidationErrorHandler()`.
+   *
+   * To run both sync and async validators, use `.validateAsync()`.
    * @param opts Options to pass to the validator system.
    */
   validate(opts?: ValidatorOptions): Data<this> {
@@ -110,6 +112,8 @@ export abstract class DataTransferObject {
   /**
    * Validates this object asynchronously, and resolves to its plain data if validations pass.
    * Otherwise, rejects with an error or runs the appropriate handler set with `setValidationErrorHandler()`.
+   *
+   * To validate synchronously, use `.validate()`.
    * @param opts Options to pass to the validator system.
    */
   async validateAsync(opts?: ValidatorOptions): Promise<Data<this>> {
