@@ -47,6 +47,7 @@ describe('data-transfer-object', () => {
     const userSignupInput = new UserSignupInput({ username: '', password: '' });
     expect(userSignupInput).toBeInstanceOf(DataTransferObject);
   });
+
   it('silently gets rid of extra fields by default', () => {
     const inputData = { username: 'username', password: 'password', extra: 1 };
     const userSignupInput = new UserSignupInput(inputData);
@@ -54,12 +55,14 @@ describe('data-transfer-object', () => {
     expect(errors).toBeArrayOfSize(0);
     expect(userSignupInput).not.toContainKey('extra');
   });
+
   it('detects missing fields', () => {
     const inputData = { username: 'username' };
     const userSignupInput = new UserSignupInput(inputData);
     const errors = userSignupInput.getValidationErrors();
     expect(errors).toBeArrayOfSize(1);
   });
+
   it('returns public data only', () => {
     const inputData = { username: 'username', password: 'password' };
     const expectedData = { username: 'username', password: 'password' };
