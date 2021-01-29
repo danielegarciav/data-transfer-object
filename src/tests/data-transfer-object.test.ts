@@ -31,14 +31,14 @@ beforeEach(() => {
 describe('data-transfer-object', () => {
   it('detects validation errors (sync)', () => {
     const userSignupInput = new UserSignupInput({ username: '', password: '' });
-    const errors = userSignupInput.validate();
+    const errors = userSignupInput.getValidationErrors();
     expect(CVMock.validateSync).toHaveBeenCalledTimes(1);
     expect(errors).toBeArrayOfSize(2);
   });
 
   it('detects validation errors (async)', async () => {
     const userSignupInput = new UserSignupInput({ username: '', password: '' });
-    const errors = await userSignupInput.validateAsync();
+    const errors = await userSignupInput.getValidationErrorsAsync();
     expect(CVMock.validate).toHaveBeenCalledTimes(1);
     expect(errors).toBeArrayOfSize(2);
   });
@@ -50,21 +50,21 @@ describe('data-transfer-object', () => {
   it('silently gets rid of extra fields by default', () => {
     const inputData = { username: 'username', password: 'password', extra: 1 };
     const userSignupInput = new UserSignupInput(inputData);
-    const errors = userSignupInput.validate();
+    const errors = userSignupInput.getValidationErrors();
     expect(errors).toBeArrayOfSize(0);
     expect(userSignupInput).not.toContainKey('extra');
   });
   it('detects missing fields', () => {
     const inputData = { username: 'username' };
     const userSignupInput = new UserSignupInput(inputData);
-    const errors = userSignupInput.validate();
+    const errors = userSignupInput.getValidationErrors();
     expect(errors).toBeArrayOfSize(1);
   });
   it('returns public data only', () => {
     const inputData = { username: 'username', password: 'password' };
     const expectedData = { username: 'username', password: 'password' };
     const userSignupInput = new UserSignupInput(inputData);
-    userSignupInput.validate();
+    userSignupInput.getValidationErrors();
     const publicData = userSignupInput.toJSON();
 
     // Test equality - both objects should be subsets of each other
@@ -78,18 +78,18 @@ describe('data-transfer-object', () => {
   it('only validates once (sync)', () => {
     const inputData = { username: 'username' };
     const userSignupInput = new UserSignupInput(inputData);
-    userSignupInput.validate();
-    userSignupInput.validate();
-    userSignupInput.validate();
+    userSignupInput.getValidationErrors();
+    userSignupInput.getValidationErrors();
+    userSignupInput.getValidationErrors();
     expect(CVMock.validateSync).toBeCalledTimes(1);
   });
 
   it('only validates once (async series)', async () => {
     const inputData = { username: 'username' };
     const userSignupInput = new UserSignupInput(inputData);
-    await userSignupInput.validateAsync();
-    await userSignupInput.validateAsync();
-    await userSignupInput.validateAsync();
+    await userSignupInput.getValidationErrorsAsync();
+    await userSignupInput.getValidationErrorsAsync();
+    await userSignupInput.getValidationErrorsAsync();
     expect(CVMock.validate).toBeCalledTimes(1);
   });
 
@@ -97,9 +97,9 @@ describe('data-transfer-object', () => {
     const inputData = { username: 'username' };
     const userSignupInput = new UserSignupInput(inputData);
     await Promise.all([
-      userSignupInput.validateAsync(),
-      userSignupInput.validateAsync(),
-      userSignupInput.validateAsync(),
+      userSignupInput.getValidationErrorsAsync(),
+      userSignupInput.getValidationErrorsAsync(),
+      userSignupInput.getValidationErrorsAsync(),
     ]);
     expect(CVMock.validate).toBeCalledTimes(1);
   });
@@ -108,17 +108,17 @@ describe('data-transfer-object', () => {
     {
       const inputData = { username: 'username', password: 'password', extra: 1 };
       const input = new UserSignupInput(inputData);
-      const errorsNonWhitelisted = input.validate({ forbidNonWhitelisted: true });
+      const errorsNonWhitelisted = input.getValidationErrors({ forbidNonWhitelisted: true });
       expect(errorsNonWhitelisted).toBeArrayOfSize(1);
-      const errorsUnknownValues = input.validate({ forbidUnknownValues: true });
+      const errorsUnknownValues = input.getValidationErrors({ forbidUnknownValues: true });
       expect(errorsUnknownValues).toBeArrayOfSize(1);
     }
     {
       const inputData = { username: 'username', password: 'password' };
       const input = new UserSignupInput(inputData);
-      const errorsNonWhitelisted = input.validate({ forbidNonWhitelisted: true });
+      const errorsNonWhitelisted = input.getValidationErrors({ forbidNonWhitelisted: true });
       expect(errorsNonWhitelisted).toBeArrayOfSize(0);
-      const errorsUnknownValues = input.validate({ forbidUnknownValues: true });
+      const errorsUnknownValues = input.getValidationErrors({ forbidUnknownValues: true });
       expect(errorsUnknownValues).toBeArrayOfSize(0);
     }
   });

@@ -52,7 +52,7 @@ export abstract class DataTransferObject {
    * To run asynchronous validators as well, use `.validateAsync()`.
    * @param opts Options to pass to the validator system.
    */
-  validate(opts?: ValidatorOptions): ValidationError[] {
+  getValidationErrors(opts?: ValidatorOptions): ValidationError[] {
     if (this[validated]) return this[validationErrors];
     this[validationErrors] = validateSync(this, { ...defaultOpts, ...opts });
     this[validated] = true;
@@ -64,7 +64,7 @@ export abstract class DataTransferObject {
    * Always returns a promise. To validate synchronously, use `.validate()`.
    * @param opts Options to pass to the validator system.
    */
-  async validateAsync(opts?: ValidatorOptions): Promise<ValidationError[]> {
+  async getValidationErrorsAsync(opts?: ValidatorOptions): Promise<ValidationError[]> {
     if (this[validated]) return this[validationErrors];
 
     const ongoing = this[ongoingValidation];
