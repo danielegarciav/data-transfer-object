@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IsNumberOptions | data-transfer-object</title>
+	<title>ValidationErrorHandlerOptions | data-transfer-object</title>
 	<meta name="description" content="Documentation for data-transfer-object">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,28 +55,21 @@
 					<a href="../modules.html">data-transfer-object</a>
 				</li>
 				<li>
-					<a href="isnumberoptions.html">IsNumberOptions</a>
+					<a href="validationerrorhandleroptions.html">ValidationErrorHandlerOptions</a>
 				</li>
 			</ul>
-			<h1>Interface IsNumberOptions</h1>
+			<h1>Interface ValidationErrorHandlerOptions</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Options to be passed to IsNumber decorator.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IsNumberOptions</span>
+						<span class="target">ValidationErrorHandlerOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -84,48 +77,37 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="isnumberoptions.html#allowinfinity" class="tsd-kind-icon">allow<wbr>Infinity</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="isnumberoptions.html#allownan" class="tsd-kind-icon">allow<wbr>NaN</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="isnumberoptions.html#maxdecimalplaces" class="tsd-kind-icon">max<wbr>Decimal<wbr>Places</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="validationerrorhandleroptions.html#rawerrors" class="tsd-kind-icon">raw<wbr>Errors</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="allowinfinity" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> allow<wbr>Infinity</h3>
-					<div class="tsd-signature tsd-kind-icon">allow<wbr>Infinity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="rawerrors" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> raw<wbr>Errors</h3>
+					<div class="tsd-signature tsd-kind-icon">raw<wbr>Errors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in node_modules/class-validator/types/decorator/typechecker/IsNumber.d.ts:8</li>
+							<li>Defined in <a href="https://github.com/danielegarciav/data-transfer-object/blob/f5745d9/src/validation-error-handler.ts#L13">src/validation-error-handler.ts:13</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="allownan" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> allow<wbr>NaN</h3>
-					<div class="tsd-signature tsd-kind-icon">allow<wbr>NaN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/class-validator/types/decorator/typechecker/IsNumber.d.ts:7</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="maxdecimalplaces" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> max<wbr>Decimal<wbr>Places</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Decimal<wbr>Places<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/class-validator/types/decorator/typechecker/IsNumber.d.ts:9</li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>By default, errors will be returned as a map. Setting this to <code>true</code> will pass in an
+							array of <code>ValidationError</code> to the callback instead.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>false</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -141,17 +123,11 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="isnumberoptions.html" class="tsd-kind-icon">Is<wbr>Number<wbr>Options</a>
+					<li class="current tsd-kind-interface">
+						<a href="validationerrorhandleroptions.html" class="tsd-kind-icon">Validation<wbr>Error<wbr>Handler<wbr>Options</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="isnumberoptions.html#allowinfinity" class="tsd-kind-icon">allow<wbr>Infinity</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="isnumberoptions.html#allownan" class="tsd-kind-icon">allow<wbr>NaN</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="isnumberoptions.html#maxdecimalplaces" class="tsd-kind-icon">max<wbr>Decimal<wbr>Places</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="validationerrorhandleroptions.html#rawerrors" class="tsd-kind-icon">raw<wbr>Errors</a>
 							</li>
 						</ul>
 					</li>
