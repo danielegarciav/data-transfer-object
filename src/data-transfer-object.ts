@@ -14,8 +14,11 @@ type NonFunctionPropertyNames<T> = {
 /** Extract the data properties out of a Data Transfer Object. */
 export type Data<T> = Pick<T, NonFunctionPropertyNames<T>>;
 
+// Strict options by default
 const defaultOpts: ValidatorOptions = {
   whitelist: true,
+  forbidNonWhitelisted: true,
+  forbidUnknownValues: true,
 };
 
 // Must use symbols for private properties so that they are not included in validation

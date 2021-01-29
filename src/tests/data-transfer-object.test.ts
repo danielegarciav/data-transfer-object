@@ -61,12 +61,11 @@ describe('data-transfer-object', () => {
     expect(userSignupInput).toBeInstanceOf(DataTransferObject);
   });
 
-  it('silently gets rid of extra fields by default', () => {
+  it('returns errors for extra fields by default', () => {
     const inputData = { username: 'username', password: 'password', extra: 1 };
     const userSignupInput = new UserSignupInput(inputData);
     const errors = userSignupInput.getValidationErrors();
-    expect(errors).toBeArrayOfSize(0);
-    expect(userSignupInput).not.toContainKey('extra');
+    expect(errors).toBeArrayOfSize(1);
   });
 
   it('detects missing fields', () => {
