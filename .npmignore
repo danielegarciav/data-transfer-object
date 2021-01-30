@@ -6,3 +6,4 @@ jest.config.ts
 .eslintrc.js
 .prettierrc
 tsconfig*.json
+changelog.md
