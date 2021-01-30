@@ -9,7 +9,7 @@ export class ValidationException extends Error {
    * An object with key-value pairs where the keys represent a property name, and the values
    * are an array of all validation error messages for that property.
    */
-  public validationErrorMap: ValidationErrorMap;
+  public validationErrors: ValidationErrorMap;
 
   /**
    * Error thrown when a data transfer object's validation has failed.
@@ -17,6 +17,6 @@ export class ValidationException extends Error {
    */
   constructor(errors: ValidationErrorMap | ValidationError[]) {
     super('Validation failed');
-    this.validationErrorMap = Array.isArray(errors) ? getValidationErrorMap(errors) : errors;
+    this.validationErrors = Array.isArray(errors) ? getValidationErrorMap(errors) : errors;
   }
 }

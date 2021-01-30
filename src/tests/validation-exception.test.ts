@@ -22,13 +22,13 @@ describe('validation-exception', () => {
     const input: ValidationError[] = [];
     const validationException = new ValidationException(input);
     expect(mockVem.getValidationErrorMap).toHaveBeenCalledTimes(1);
-    expect(validationException.validationErrorMap).toEqual(testValidationErrorMap);
+    expect(validationException.validationErrors).toEqual(testValidationErrorMap);
   });
 
   it('directly sets incoming error map to the new instance', () => {
     const input: mockVem.ValidationErrorMap = {};
     const validationException = new ValidationException(input);
     expect(mockVem.getValidationErrorMap).toHaveBeenCalledTimes(0);
-    expect(validationException.validationErrorMap).toEqual(input);
+    expect(validationException.validationErrors).toEqual(input);
   });
 });
