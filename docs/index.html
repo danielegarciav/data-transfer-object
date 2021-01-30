@@ -61,7 +61,7 @@
 				<a href="#data-transfer-object" id="data-transfer-object" style="color: inherit; text-decoration: none;">
 					<h1>data-transfer-object</h1>
 				</a>
-				<p>Data Transfer Object class built on <a href="https://github.com/typestack/class-validator">TypeStacks&#39;s <code>class-validator</code></a>. Allows you to build a DTO class that automatically validates input from outside sources and ensures its shape is correct.</p>
+				<p>Data Transfer Object class built on <a href="https://github.com/typestack/class-validator">TypeStacks&#39;s <code>class-validator</code></a>. Allows you to build a class that validates input from outside sources and ensures its shape is correct. Full TypeScript support with strict, strong typing.</p>
 				<!-- START doctoc generated TOC please keep comment here to allow auto update -->
 				<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 				<p><strong>Table of contents</strong></p>
@@ -71,13 +71,19 @@
 							<li><a href="#for-browsers-script-tag">For browsers (script tag)</a></li>
 						</ul>
 					</li>
+					<li><a href="#release-notes">Release notes</a></li>
 					<li><a href="#usage">Usage</a><ul>
-							<li><a href="#typescript-notes">TypeScript notes</a></li>
+							<li><a href="#throwing-a-custom-error-on-validation-failure">Throwing a custom error on validation failure</a><ul>
+									<li><a href="#accessing-raw-error-data-in-custom-error-handler">Accessing raw error data in custom error handler</a></li>
+								</ul>
+							</li>
+							<li><a href="#get-validation-errors-without-throwing-an-error">Get validation errors without throwing an error</a></li>
+							<li><a href="#run-async-validators">Run async validators</a></li>
 						</ul>
 					</li>
-					<li><a href="#documentation">Documentation</a></li>
-					<li><a href="#example">Example</a></li>
-					<li><a href="#development">Development</a></li>
+					<li><a href="#full-api-documentation">Full API Documentation</a></li>
+					<li><a href="#comprehensive-example">Comprehensive example</a></li>
+					<li><a href="#development-and-contributions">Development and contributions</a></li>
 					<li><a href="#license">License</a></li>
 				</ul>
 				<!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -94,11 +100,15 @@
 				<a href="#for-browsers-script-tag" id="for-browsers-script-tag" style="color: inherit; text-decoration: none;">
 					<h3>For browsers (script tag)</h3>
 				</a>
-				<p>UMD builds aren&#39;t available yet. Rollup builds are planned for the future.</p>
+				<p>Browser builds aren&#39;t available yet, but they are planned for the future.</p>
+				<a href="#release-notes" id="release-notes" style="color: inherit; text-decoration: none;">
+					<h2>Release notes</h2>
+				</a>
+				<p>See information about breaking changes and release notes <a href="changelog.md">here</a>.</p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<p>Create a DTO class by importing <code>DataTransferObject</code>, extending it with your custom properties, and using the appropriate decorators. This package re-exports all decorators and functions from <a href="https://github.com/typestack/class-validator">TypeStack&#39;s <code>class-validator</code></a>.</p>
+				<p>Create your own classes by importing and extending <code>DataTransferObject</code> with your own properties, and using the appropriate validator decorators. This package re-exports all decorators and functions from <a href="https://github.com/typestack/class-validator">TypeStack&#39;s <code>class-validator</code></a>.</p>
 				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DataTransferObject</span><span style="color: #000000">, </span><span style="color: #001080">IsString</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
 
 <span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">DataTransferObject</span><span style="color: #000000"> {</span>
@@ -107,45 +117,109 @@
 <span style="color: #000000">  </span><span style="color: #001080">myString</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
 <span style="color: #000000">}</span>
 </code></pre>
-				<p>Once your class is defined, you can instantiate it, pass your input into it, and validate it:</p>
-				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">input</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000">({ </span><span style="color: #001080">myString:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000"> });</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">errors</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
-
-<span style="color: #008000">// `errors` will be an array of `ValidationError` objects.</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// outputs:</span>
-<span style="color: #000000">[</span>
-<span style="color: #000000">  {</span>
-<span style="color: #000000">    </span><span style="color: #001080">target:</span><span style="color: #000000"> { </span><span style="color: #001080">myString:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000"> },</span>
-<span style="color: #000000">    </span><span style="color: #001080">value:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">property:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;myString&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">children:</span><span style="color: #000000"> [],</span>
-<span style="color: #000000">    </span><span style="color: #001080">constraints:</span><span style="color: #000000"> { </span><span style="color: #001080">isString:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;myString must be a string&#039;</span><span style="color: #000000"> },</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">];</span>
+				<p><strong>TypeScript note:</strong> when using TypeScript with <code>&quot;strict&quot;: true</code>, you must use non-null assertions (<code>!:</code>) when declaring class properties. Also, <code>experimentalDecorators</code> and <code>emitDecoratorMetadata</code> must be set to <code>true</code> in your <code>tsconfig.json</code>.</p>
+				<p>Once your class is defined, you can construct a new instance of it, pass your input into it, and run <code>.validate()</code> on it. If your input is valid, it will return a plain object with the validated data. Otherwise, by default, a <code>ValidationException</code> will be thrown.</p>
+				<pre><code class="language-typescript">
+<span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">validated</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000">(</span><span style="color: #001080">input</span><span style="color: #000000">).</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">validated</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #008000">// validated === input</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">ValidationException</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">err</span><span style="color: #000000">.</span><span style="color: #001080">validationErrors</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// e.g. if `input` was `{ myString: 1234 }`, this would output:</span>
+<span style="color: #000000">    { </span><span style="color: #A31515">&quot;myString&quot;</span><span style="color: #000000">: [</span><span style="color: #A31515">&quot;property myString should be a string&quot;</span><span style="color: #000000">] }</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
 </code></pre>
-				<p>Validating it will also silently drop all unknown properties from the input:</p>
-				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">input</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000">({ </span><span style="color: #001080">myString:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;a&#039;</span><span style="color: #000000">, </span><span style="color: #001080">myOtherString:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;b&#039;</span><span style="color: #000000"> });</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">errors</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
+				<a href="#throwing-a-custom-error-on-validation-failure" id="throwing-a-custom-error-on-validation-failure" style="color: inherit; text-decoration: none;">
+					<h3>Throwing a custom error on validation failure</h3>
+				</a>
+				<p>You can use <code>setValidationErrorHandler()</code> to register a callback to run whenever a <code>.validate()</code> call fails on any object across your project. For instance:</p>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">setValidationErrorHandler</span><span style="color: #000000">, </span><span style="color: #001080">ValidationErrorMap</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
 
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">); </span><span style="color: #008000">// []</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">input</span><span style="color: #000000">); </span><span style="color: #008000">// { myString: &#039;a&#039; }</span>
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">CustomError</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Error</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">statusCode</span><span style="color: #000000"> = </span><span style="color: #098658">400</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">errors</span><span style="color: #000000">: </span><span style="color: #267F99">ValidationErrorMap</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">  </span><span style="color: #0000FF">constructor</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">: </span><span style="color: #267F99">ValidationErrorMap</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Failed to validate&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">errors</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #795E26">setValidationErrorHandler</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">CustomError</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyExampleDto</span><span style="color: #000000">({ </span><span style="color: #001080">invalidData:</span><span style="color: #000000"> </span><span style="color: #098658">42</span><span style="color: #000000"> }).</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">CustomError</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #A31515">`Request failed with error code </span><span style="color: #0000FF">${</span><span style="color: #001080">err</span><span style="color: #000000FF">.</span><span style="color: #001080">statusCode</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">err</span><span style="color: #000000">.</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#accessing-raw-error-data-in-custom-error-handler" id="accessing-raw-error-data-in-custom-error-handler" style="color: inherit; text-decoration: none;">
+					<h4>Accessing raw error data in custom error handler</h4>
+				</a>
+				<p>Under the hood, <code>data-transfer-object</code> formats the raw array of <code>ValidationError</code> returned by <code>class-validator</code> into an object mapping keys to properties and values to validation messages (aka a <code>ValidationErrorMap</code>).</p>
+				<p>If you wish to get direct access to the array of <code>ValidationError</code> in your error handler, you may pass in <code>{ rawErrors: true }</code> as a second parameter to <code>.setValidationErrorHandler()</code>:</p>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">setValidationErrorHandler</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #795E26">setValidationErrorHandler</span><span style="color: #000000">(</span>
+<span style="color: #000000">  </span><span style="color: #001080">errors</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// `errors` here is now of type `ValidationError[]`.</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// example output:</span>
+<span style="color: #000000">    [</span>
+<span style="color: #000000">      {</span>
+<span style="color: #000000">        </span><span style="color: #001080">target:</span><span style="color: #000000"> { </span><span style="color: #001080">myString:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000"> },</span>
+<span style="color: #000000">        </span><span style="color: #001080">value:</span><span style="color: #000000"> </span><span style="color: #098658">12</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">property:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;myString&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">children:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">constraints:</span><span style="color: #000000"> { </span><span style="color: #001080">isString:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;myString must be a string&#039;</span><span style="color: #000000"> },</span>
+<span style="color: #000000">      },</span>
+<span style="color: #000000">    ];</span>
+<span style="color: #000000">  },</span>
+<span style="color: #000000">  { </span><span style="color: #001080">rawErrors:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000"> },</span>
+<span style="color: #000000">);</span>
+</code></pre>
+				<a href="#get-validation-errors-without-throwing-an-error" id="get-validation-errors-without-throwing-an-error" style="color: inherit; text-decoration: none;">
+					<h3>Get validation errors without throwing an error</h3>
+				</a>
+				<p>You may use <code>.getValidationErrors()</code> to get an array of <code>ValidationError</code> without having to thrown an actual error. To get the plain data later, use <code>.toJSON()</code>.</p>
+				<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dto</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyDto</span><span style="color: #000000">({ </span><span style="color: #001080">someData:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data&#039;</span><span style="color: #000000"> });</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">errors</span><span style="color: #000000"> = </span><span style="color: #001080">dto</span><span style="color: #000000">.</span><span style="color: #795E26">getValidationErrors</span><span style="color: #000000">();</span>
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">errors</span><span style="color: #000000">.</span><span style="color: #001080">length</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">return</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = </span><span style="color: #001080">dto</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">();</span>
 </code></pre>
 				<p>Take a look at <a href="https://github.com/typestack/class-validator/"><code>class-validator</code>&#39;s documentation</a> to get information on all available validators and validation options.</p>
-				<a href="#typescript-notes" id="typescript-notes" style="color: inherit; text-decoration: none;">
-					<h3>TypeScript notes</h3>
+				<a href="#run-async-validators" id="run-async-validators" style="color: inherit; text-decoration: none;">
+					<h3>Run async validators</h3>
 				</a>
-				<p>Note that when using TypeScript with <code>&quot;strict&quot;: true</code>, you must use non-null assertions (<code>!:</code>) when declaring class properties. Also, <code>experimentalDecorators</code> and <code>emitDecoratorMetadata</code> must be set to <code>true</code> in your <code>tsconfig.json</code>.</p>
-				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
-					<h2>Documentation</h2>
+				<p><code>.validate()</code> and <code>.getValidationErrors()</code> will only run synchronous validators, which covers most use cases in a web application. If you would like to run asynchronous validators as well, use <code>.validateAsync()</code> and <code>.getValidationErrorsAsync()</code> respectively. These counterparts will always return a promise, even if there are no async validators on the validated object.</p>
+				<a href="#full-api-documentation" id="full-api-documentation" style="color: inherit; text-decoration: none;">
+					<h2>Full API Documentation</h2>
 				</a>
 				<p>The most up-to-date documentation for all exported items from this package is automatically generated from code and available at <a href="https://danielegarciav.github.io/data-transfer-object/">https://danielegarciav.github.io/data-transfer-object/</a>.</p>
-				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
-					<h2>Example</h2>
+				<p>You may wish to uncheck the &quot;Externals&quot; checkbox option (top-right on desktop, cog icon on mobile) in order to hide documentation from <code>class-validator</code> and focus only on what this package exports.</p>
+				<a href="#comprehensive-example" id="comprehensive-example" style="color: inherit; text-decoration: none;">
+					<h2>Comprehensive example</h2>
 				</a>
-				<p>In the following example, we have an Express application that lets us sign up users. In order to validate input from the web app client, we create a data transfer object representing the input data, and attach our desired validators:</p>
-				<pre><code class="language-typescript"><span style="color: #008000">// input-dtos.ts</span>
+				<p>In the following example, we have an Express application that lets us sign up users.</p>
+				<ul>
+					<li>We define an <code>UserSignupInput</code> data transfer object class.</li>
+					<li>We define our own custom errors <code>ApiError</code> and <code>ApiValidationError</code>, which allow us to define a status code, among other things.</li>
+					<li>We define an <a href="https://expressjs.com/en/guide/error-handling.html">Express error handler</a> to catch any errors and format the result that will be sent back to our client.</li>
+					<li>We wire everything up as an Express app, and make it so validation errors throw an <code>ApiValidationError</code>, which will be then appropriately handled by our Express error handler.</li>
+					<li>We can then write our signup controller.</li>
+				</ul>
+				<pre><code class="language-typescript"><span style="color: #008000">// input-classes.ts</span>
 
 <span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DataTransferObject</span><span style="color: #000000">, </span><span style="color: #001080">IsString</span><span style="color: #000000">, </span><span style="color: #001080">Length</span><span style="color: #000000">, </span><span style="color: #001080">MinLength</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
 
@@ -163,45 +237,89 @@
 <span style="color: #000000">  </span><span style="color: #001080">password</span><span style="color: #000000">!: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
 <span style="color: #000000">}</span>
 </code></pre>
-				<p>The Express request handler in our example:</p>
-				<pre><code class="language-typescript"><span style="color: #008000">// signup-controller.ts</span>
+				<pre><code class="language-typescript"><span style="color: #008000">// custom-errors.ts</span>
 
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Request</span><span style="color: #000000">, </span><span style="color: #001080">Response</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;express&#039;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">User</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./models&#039;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">UserSignupInput</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./input-dtos&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">ValidationErrorMap</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
 
-<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">signup</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">: </span><span style="color: #267F99">Request</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000">: </span><span style="color: #267F99">Response</span><span style="color: #000000">): {</span>
-<span style="color: #000000">  </span><span style="color: #008000">// Construct a new DTO instance passing starting state as argument.</span>
-<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">input</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">UserSignupInput</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">);</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">ApiError</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Error</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">type</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">statusCode</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
 
-<span style="color: #000000">  </span><span style="color: #008000">// Run validation. Only synchronous validators are run by default, which covers most use cases.</span>
-<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">errors</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
-
-<span style="color: #000000">  </span><span style="color: #008000">// You may also use `.validateAsync()` to run both sync + async validators.</span>
-<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">asyncErrors</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">validateAsync</span><span style="color: #000000">();</span>
-
-<span style="color: #000000">  </span><span style="color: #008000">// Result will be an array of `ValidationError[]`</span>
-<span style="color: #000000">  </span><span style="color: #795E26">if</span><span style="color: #000000"> (errors.length) {</span>
-<span style="color: #000000">    </span><span style="color: #008000">// Handle validation errors here, for example:</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">status</span><span style="color: #000000">(</span><span style="color: #098658">400</span><span style="color: #000000">).</span><span style="color: #795E26">json</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">constructor</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">: </span><span style="color: #267F99">ApiErrorType</span><span style="color: #000000">, </span><span style="color: #001080">statusCode</span><span style="color: #000000">?: </span><span style="color: #267F99">number</span><span style="color: #000000">, </span><span style="color: #001080">message</span><span style="color: #000000">?: </span><span style="color: #267F99">string</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">name</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;ApiError&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000"> = </span><span style="color: #001080">type</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">message</span><span style="color: #000000"> = </span><span style="color: #001080">message</span><span style="color: #000000"> ?? </span><span style="color: #A31515">&#039;Unspecified error&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">statusCode</span><span style="color: #000000"> = </span><span style="color: #001080">statusCode</span><span style="color: #000000"> ?? </span><span style="color: #098658">500</span><span style="color: #000000">;</span>
 <span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
 
-<span style="color: #000000">  </span><span style="color: #008000">// Your input is guaranteed to be validated at this point.</span>
-<span style="color: #000000">  </span><span style="color: #267F99">await</span><span style="color: #000000"> </span><span style="color: #267F99">User</span><span style="color: #000000">.</span><span style="color: #267F99">register</span><span style="color: #000000">(</span><span style="color: #267F99">input</span><span style="color: #000000">);</span>
-
-<span style="color: #000000">  </span><span style="color: #008000">// Use `.toJSON()` to get a plain object with just your data.</span>
-<span style="color: #000000">  </span><span style="color: #008000">// `.toJSON()` is automatically called when a DTO instance is stringified.</span>
-<span style="color: #000000">  </span><span style="color: #267F99">const</span><span style="color: #000000"> </span><span style="color: #001080">data</span><span style="color: #000000"> = </span><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">();</span>
-<span style="color: #000000">  </span><span style="color: #0000FF">typeof</span><span style="color: #000000"> </span><span style="color: #267F99">input</span><span style="color: #000000">.</span><span style="color: #001080">validate</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;function&#039;</span><span style="color: #000000">;</span>
-<span style="color: #000000">  </span><span style="color: #0000FF">typeof</span><span style="color: #000000"> </span><span style="color: #267F99">data</span><span style="color: #000000">.</span><span style="color: #001080">validate</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;undefined&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #000000">  </span><span style="color: #267F99">return</span><span style="color: #000000"> </span><span style="color: #267F99">res</span><span style="color: #000000">.</span><span style="color: #267F99">status</span><span style="color: #000000">(</span><span style="color: #098658">200</span><span style="color: #000000">).</span><span style="color: #267F99">json</span><span style="color: #000000">({ </span><span style="color: #001080">success</span><span style="color: #000000">: </span><span style="color: #267F99">true</span><span style="color: #000000"> });</span>
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">ApiValidationError</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">ApiError</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">validationMessages</span><span style="color: #000000">: </span><span style="color: #267F99">ValidationErrorMap</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">constructor</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">: </span><span style="color: #267F99">ValidationErrorMap</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">super</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;InvalidRequest&#039;</span><span style="color: #000000">, </span><span style="color: #098658">400</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;Request is invalid&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">validationMessages</span><span style="color: #000000"> = </span><span style="color: #001080">errors</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
 <span style="color: #000000">}</span>
 </code></pre>
-				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
-					<h2>Development</h2>
+				<pre><code class="language-typescript"><span style="color: #008000">// error-handler.ts</span>
+
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Request</span><span style="color: #000000">, </span><span style="color: #001080">Response</span><span style="color: #000000">, </span><span style="color: #001080">NextFunction</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;express&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">ApiError</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./custom-errors&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">expressErrorHandler</span><span style="color: #000000">(</span>
+<span style="color: #000000">  </span><span style="color: #001080">error</span><span style="color: #000000">: </span><span style="color: #267F99">Error</span><span style="color: #000000"> | </span><span style="color: #267F99">ApiError</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">req</span><span style="color: #000000">: </span><span style="color: #267F99">Request</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">res</span><span style="color: #000000">: </span><span style="color: #267F99">Response</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">next</span><span style="color: #000000">: </span><span style="color: #267F99">NextFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">statusCode</span><span style="color: #000000"> = </span><span style="color: #001080">error</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">ApiError</span><span style="color: #000000"> ? </span><span style="color: #001080">error</span><span style="color: #000000">.</span><span style="color: #001080">statusCode</span><span style="color: #000000"> : </span><span style="color: #098658">500</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jsonResponse</span><span style="color: #000000"> = { </span><span style="color: #001080">error:</span><span style="color: #000000"> { ...</span><span style="color: #001080">error</span><span style="color: #000000">, </span><span style="color: #001080">statusCode</span><span style="color: #000000"> } };</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Log non-ApiErrors to console</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (!(</span><span style="color: #001080">error</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">ApiError</span><span style="color: #000000">)) </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">  </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">status</span><span style="color: #000000">(</span><span style="color: #001080">statusCode</span><span style="color: #000000">).</span><span style="color: #795E26">json</span><span style="color: #000000">(</span><span style="color: #001080">jsonResponse</span><span style="color: #000000">);</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<pre><code class="language-typescript"><span style="color: #008000">// express-server.ts</span>
+
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Express</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;express&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">setValidationErrorHandler</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data-transfer-object&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">expressErrorHandler</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./error-handler.ts&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">ApiValidationError</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./custom-errors.ts&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">signup</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./signup-controller.ts&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #795E26">setValidationErrorHandler</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">ApiValidationError</span><span style="color: #000000">(</span><span style="color: #001080">errors</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">app</span><span style="color: #000000"> = </span><span style="color: #795E26">Express</span><span style="color: #000000">();</span>
+<span style="color: #001080">app</span><span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">Express</span><span style="color: #000000">.</span><span style="color: #795E26">json</span><span style="color: #000000">());</span>
+<span style="color: #001080">app</span><span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;/users/signup&#039;</span><span style="color: #000000">, </span><span style="color: #001080">signup</span><span style="color: #000000">);</span>
+<span style="color: #001080">app</span><span style="color: #000000">.</span><span style="color: #795E26">use</span><span style="color: #000000">(</span><span style="color: #001080">expressErrorHandler</span><span style="color: #000000">);</span>
+</code></pre>
+				<pre><code class="language-typescript"><span style="color: #008000">// signup-controller.ts</span>
+
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Request</span><span style="color: #000000">, </span><span style="color: #001080">Response</span><span style="color: #000000">, </span><span style="color: #001080">NextFunction</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;express&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">User</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./models&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">UserSignupInput</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./input-classes&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">signup</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">: </span><span style="color: #267F99">Request</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000">: </span><span style="color: #267F99">Response</span><span style="color: #000000">, </span><span style="color: #001080">next</span><span style="color: #000000">: </span><span style="color: #267F99">NextFunction</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">username</span><span style="color: #000000">, </span><span style="color: #0070C1">password</span><span style="color: #000000"> } = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">UserSignupInput</span><span style="color: #000000">(</span><span style="color: #001080">req</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">).</span><span style="color: #795E26">validate</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">User</span><span style="color: #000000">.</span><span style="color: #795E26">register</span><span style="color: #000000">(</span><span style="color: #001080">username</span><span style="color: #000000">, </span><span style="color: #001080">password</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">status</span><span style="color: #000000">(</span><span style="color: #098658">200</span><span style="color: #000000">).</span><span style="color: #795E26">json</span><span style="color: #000000">({ </span><span style="color: #001080">success:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000"> });</span>
+<span style="color: #000000">  } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #795E26">next</span><span style="color: #000000">(</span><span style="color: #001080">err</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<p>We may also use something like <a href="https://github.com/davidbanham/express-async-errors"><code>express-async-errors</code></a> in order to avoid having to wrap our async code in try/catch statements and manually calling <code>next()</code>. This is something that will be automatically addressed by Express 5 once it is released.</p>
+				<a href="#development-and-contributions" id="development-and-contributions" style="color: inherit; text-decoration: none;">
+					<h2>Development and contributions</h2>
 				</a>
-				<p>Check package.json to find scripts related to installing dependencies, building, testing, linting and generating documentation.</p>
+				<p>Check package.json to find scripts related to installing dependencies, building, testing, linting and generating documentation. I am open to new issues and pull requests!</p>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h2>License</h2>
 				</a>
