@@ -36,7 +36,8 @@
     "test": "jest",
     "docs": "npm run docs:readme && npm run docs:api",
     "docs:readme": "doctoc --title \"**Table of contents**\" readme.md",
-    "docs:api": "typedoc src/index.ts"
+    "docs:api": "typedoc src/index.ts",
+    "changelog": "standard-changelog"
   },
   "dependencies": {
     "class-validator": "^0.13.1"
