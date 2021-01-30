@@ -38,7 +38,7 @@ function assertEmptyErrorList(errors: ValidationError[]) {
   if (errors.length) {
     if (!onValidationError) throw new ValidationException(errors);
     onValidationError(errors);
-    throw new Error('Uncaught validation error');
+    throw new ValidationException(errors);
   }
 }
 

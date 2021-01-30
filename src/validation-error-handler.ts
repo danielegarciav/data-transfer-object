@@ -1,8 +1,8 @@
 import { ValidationError } from 'class-validator';
 import { getValidationErrorMap, ValidationErrorMap } from './validation-error-map';
 
-export type ValidationErrorHandler = (errors: ValidationError[]) => never;
-export type ValidationErrorMapHandler = (errorMap: ValidationErrorMap) => never;
+export type ValidationErrorHandler = (errors: ValidationError[]) => void;
+export type ValidationErrorMapHandler = (errorMap: ValidationErrorMap) => void;
 
 export interface ValidationErrorHandlerOptions {
   /**
@@ -20,8 +20,8 @@ export interface ValidationErrorHandlerOptions {
 export let onValidationError: ValidationErrorHandler | undefined;
 
 /**
- * Register a callback to run whenever a validation fails. The callback must throw.
- * @param handler The callback that will receive a map of validation errors. Must throw.
+ * Register a callback to run whenever a validation fails.
+ * @param handler The callback that will receive a map of validation errors.
  * @param opts Options
  */
 export function setValidationErrorHandler(
@@ -30,8 +30,8 @@ export function setValidationErrorHandler(
 ): void;
 
 /**
- * Register a callback to run whenever a validation fails. The callback must throw.
- * @param handler The callback that will receive an array of validation errors. Must throw.
+ * Register a callback to run whenever a validation fails.
+ * @param handler The callback that will receive an array of validation errors.
  * @param opts Options
  */
 export function setValidationErrorHandler(
@@ -40,9 +40,9 @@ export function setValidationErrorHandler(
 ): void;
 
 /**
- * Register a callback to run whenever a validation fails. The callback must throw.
+ * Register a callback to run whenever a validation fails.
  * @param handler The callback that will receive either an array or a map of validation errors,
- * depending on options. Must throw.
+ * depending on options.
  * @param opts Options
  */
 export function setValidationErrorHandler(

@@ -178,10 +178,9 @@ describe('data-transfer-object', () => {
   });
 
   it('throws error when custom validation error handler does not throw', () => {
-    /// @ts-expect-error: Handler should throw error, but this one does not.
     setValidationErrorHandler(handlerThatDoesNotThrow);
     const inputData = { username: 'username' };
     const validation = () => new UserSignupInput(inputData).validate();
-    expect(validation).toThrowError();
+    expect(validation).toThrowError(ValidationException);
   });
 });
