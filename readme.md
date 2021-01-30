@@ -146,16 +146,6 @@ if (errors.length) {
 const data = dto.toJSON();
 ```
 
-Validating it will also silently drop all unknown properties from the input:
-
-```typescript
-const input = new MyDto({ myString: 'a', myOtherString: 'b' });
-const errors = input.validate();
-
-console.log(errors); // []
-console.log(input); // { myString: 'a' }
-```
-
 Take a look at [`class-validator`'s documentation](https://github.com/typestack/class-validator/) to get information on all available validators and validation options.
 
 ### Run async validators
